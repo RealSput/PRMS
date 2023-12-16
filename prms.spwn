@@ -1,0 +1,50 @@
+extract obj_props
+
+let prms = {
+    promise: (cb) {
+        rdict = { 
+            resolve: () {
+                let fnuuy_ctx = $.trigger_fn_context()
+                let rval;
+                resolve = (val = true) {
+                    ctx = !{
+                        -> return
+                    }
+                    ctx!
+                    $.extend_trigger_func(fnuuy_ctx, () {
+                        rval = val;
+                    })
+                }
+                cb(resolve)
+                return rval;
+            }
+        }
+        return rdict;
+    },
+}
+
+prms.await = (promises: @dictionary | @array) {
+   let funnier_ctx = !{
+       -> return
+   }
+   if promises.type == @dictionary {
+        return promises.resolve()
+    } else {
+        let pool = (' ' * (promises.length - 1)).split(' ').map(x => !{});
+        for i in 0..pool.length {
+            $.print(i, pool.length - 1)
+            if i == pool.length - 1 {
+                $.extend_trigger_func(pool[i], () {
+                    promises[i].resolve()
+                    funnier_ctx!
+                })
+                pool[i]!
+            } else {
+                $.extend_trigger_func(pool[i], () => promises[i].resolve())
+                pool[i]!
+            }
+        }
+    }
+}
+
+return prms;
