@@ -1,50 +1,37 @@
-extract obj_props
-
 let prms = {
     promise: (cb) {
         rdict = { 
             resolve: () {
                 let fnuuy_ctx = $.trigger_fn_context()
-                let rval;
+                let rval
                 resolve = (val = true) {
-                    ctx = !{
-                        -> return
-                    }
-                    ctx!
-                    $.extend_trigger_func(fnuuy_ctx, () {
-                        rval = val;
-                    })
+                    -> return
+                    $.extend_trigger_func(fnuuy_ctx, () => rval = val)
                 }
                 cb(resolve)
-                return rval;
+                return rval
             }
         }
-        return rdict;
+        return rdict
     },
-}
-
-prms.await = (promises: @dictionary | @array) {
-   let funnier_ctx = !{
-       -> return
-   }
-   if promises.type == @dictionary {
-        return promises.resolve()
-    } else {
-        let pool = (' ' * (promises.length - 1)).split(' ').map(x => !{});
-        for i in 0..pool.length {
-            $.print(i, pool.length - 1)
-            if i == pool.length - 1 {
+    await: (promises: @dictionary | @array, cb = () {}) {
+        if promises.type == @dictionary {
+            return promises.resolve() // bro why would you do this
+        } else {
+            let funnier_ctx = !{ -> return }
+            let funniest_ctx = $.trigger_fn_context()
+            let pool = (' ' * (promises.length - 1)).split(' ').map(x => !{})
+            let results = []
+            for i in 0..pool.length {
                 $.extend_trigger_func(pool[i], () {
-                    promises[i].resolve()
-                    funnier_ctx!
+                    let j = promises[i].resolve()
+                    if i == pool.length - 1 { funnier_ctx! }
+                    $.extend_trigger_func(funniest_ctx, () => results.push(j))
                 })
                 pool[i]!
-            } else {
-                $.extend_trigger_func(pool[i], () => promises[i].resolve())
-                pool[i]!
             }
+            $.extend_trigger_func(0g, () => cb(results, 0g))
         }
     }
 }
-
-return prms;
+return prms
